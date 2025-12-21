@@ -1,8 +1,10 @@
 ﻿using FastEndpoints;
+using FastEndpoints.Swagger;
 using MediaCollection.API;
 using MediaCollection.API.Models.Options;
 using MediaCollection.Core.Models.Options;
 using MediaCollection.Data.Contexts;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -11,13 +13,15 @@ var services = builder.Services;
 services.AddApplicationServices(configuration);
 
 services.AddFastEndpoints();
-services.AddSwaggerDocument(settings =>
+services.SwaggerDocument();
+builder.Services.AddSwaggerGen(c =>
 {
-    settings.Title = "Media Collection API";
-    settings.Version = "v1";
-    settings.Description = "API для управления коллекцией медиа";
-
-    settings.DocumentName = "v1";
+    c.SwaggerDoc("v1", new OpenApiInfo { 
+        Title = "Media Collection API",
+        Description = "API для управления коллекцией медиа",
+        Version = "v1"
+    });
+    c.CustomSchemaIds(x => x.FullName);
 });
 
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -44,11 +48,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseOpenApi();
-    app.UseSwaggerUi(settings =>
+    app.UseSwagger(c =>
     {
-        settings.Path = "/swagger";
-        settings.DocumentPath = "/swagger/{documentName}/swagger.json";
-        settings.DocExpansion = "list";
+        c.RouteTemplate = "swagger/{documentName}/swagger.json";
+    });
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Media Collection API V1");
     });
 }
 

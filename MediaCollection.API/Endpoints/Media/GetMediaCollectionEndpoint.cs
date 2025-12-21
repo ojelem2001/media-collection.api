@@ -13,6 +13,7 @@ public class GetMediaCollectionEndpoint(IMediaService mediaService, IMapper mapp
     public override void Configure()
     {
         Get("/api/media/{userGuid}");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(GetMediaCollectionRequest request, CancellationToken cancellationToken)
