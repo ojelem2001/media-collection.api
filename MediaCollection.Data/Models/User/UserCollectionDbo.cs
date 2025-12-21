@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MediaCollection.Core.Models.User;
+namespace MediaCollection.Data.Models.User;
 
-public class UserCollection
+public class UserCollectionDbo
 {
     public int Id { get; set; }
 
@@ -22,7 +22,7 @@ public class UserCollection
     public DateTime? UpdatedAt { get; set; }
 
     public int UserId { get; set; }
-    public virtual ApplicationUser User { get; set; } = null!;
+    public virtual ApplicationUserDbo User { get; set; } = null!;
 
-    public virtual ICollection<UserCollectionItem> CollectionItems { get; set; } = new List<UserCollectionItem>();
+    public virtual ICollection<UserCollectionItemDbo> CollectionItems { get; set; } = [];
 }

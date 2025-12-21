@@ -1,8 +1,9 @@
 ﻿using MediaCollection.Core.Models.Media;
 using System.ComponentModel.DataAnnotations;
 
-namespace MediaCollection.Core.Models.User;
-public class UserCollectionItem
+namespace MediaCollection.Data.Models.User;
+
+public class UserCollectionItemDbo
 {
     public int Id { get; set; }
     public int? PersonalRating { get; set; } // 1-10
@@ -22,8 +23,8 @@ public class UserCollectionItem
     public DateTime? UpdatedAt { get; set; }
 
     public int CollectionId { get; set; }
-    public virtual UserCollection Collection { get; set; } = null!;
+    public virtual UserCollectionDbo Collection { get; set; } = null!;
 
     public int MediaItemId { get; set; }
-    public virtual MediaItem MediaItem { get; set; } = null!;
+    public virtual MediaItemDbo MediaItem { get; set; } = null!;
 }

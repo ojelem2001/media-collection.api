@@ -1,10 +1,17 @@
 ﻿using FastEndpoints;
+using MediaCollection.API;
+using MediaCollection.API.Models.Options;
+using MediaCollection.Core.Models.Options;
+using MediaCollection.Data.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+var services = builder.Services;
 
-// Add services to the container
-builder.Services.AddFastEndpoints();
-builder.Services.AddSwaggerDocument(settings =>
+services.AddApplicationServices(configuration);
+
+services.AddFastEndpoints();
+services.AddSwaggerDocument(settings =>
 {
     settings.Title = "Media Collection API";
     settings.Version = "v1";
@@ -13,10 +20,19 @@ builder.Services.AddSwaggerDocument(settings =>
     settings.DocumentName = "v1";
 });
 
-// Register services
-builder.Services.AddHttpClient();
+services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.ConfigureHttpJsonOptions(options =>
+// Register services
+services.AddHttpClient();
+services.AddOptions();
+services.AddOptions<JwtSettingsOptions>()
+    .Bind(configuration.GetSection("JwtSettings"))
+    .ValidateDataAnnotations();
+services.AddOptions<MediaDbOptions>()
+    .Bind(configuration.GetSection("MediaDbOptions:Database"))
+    .ValidateDataAnnotations();
+
+services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     options.SerializerOptions.WriteIndented = true;
@@ -38,5 +54,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseFastEndpoints();
 
-
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MediaDbContext>();
+}
 app.Run();

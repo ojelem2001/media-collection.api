@@ -1,10 +1,11 @@
-﻿using MediaCollection.Core.Models.User;
+﻿using MediaCollection.Data.Models.Media;
+using MediaCollection.Data.Models.User;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediaCollection.Core.Models.Media;
 
-public class MediaItem
+public class MediaItemDbo
 {
     public int Id { get; set; }
 
@@ -29,10 +30,10 @@ public class MediaItem
     public string? PosterUrl2 { get; set; }
 
     [Column(TypeName = "jsonb")]
-    public SeriesInfo? SeriesInfo { get; set; }
+    public SeriesInfoDbo? SeriesInfo { get; set; }
 
     [Column(TypeName = "jsonb")]
-    public ExternalMetadata ExternalMetadata { get; set; } = new ExternalMetadata();
+    public ExternalMetadataDbo ExternalMetadata { get; set; } = new ExternalMetadataDbo();
 
     public List<string> Genres { get; set; } = new List<string>();
 
@@ -44,7 +45,7 @@ public class MediaItem
     public DateTime? UpdatedAt { get; set; }
 
     public int UserId { get; set; }
-    public virtual ApplicationUser User { get; set; } = null!;
+    public virtual ApplicationUserDbo User { get; set; } = null!;
 
-    public virtual ICollection<UserCollectionItem> CollectionItems { get; set; } = new List<UserCollectionItem>();
+    public virtual ICollection<UserCollectionItemDbo> CollectionItems { get; set; } = [];
 }
