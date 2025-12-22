@@ -1,12 +1,25 @@
-﻿namespace MediaCollection.Data.Models.Media;
+﻿using MediaCollection.Core.Models.Media;
+using MediaCollection.Data.Database;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MediaCollection.Data.Models.Media;
 
 /// <summary>
 /// Информация о сериале
 /// </summary>
-public class SeriesInfoDbo
+[Table("series_info", Schema = MediaDbContext.SCHEME)]
+[PrimaryKey(nameof(Id))]
+public class SeriesInfoDbo: EntityDboBase
 {
+    [Column("seasons")]
     public int? Seasons { get; set; }
+
+    [Column("episodes")]
     public int? Episodes { get; set; }
+
+    [Column("end_year")]
     public int? EndYear { get; set; }
-    public string? Status { get; set; } // Завершен, продолжается и т.д.
+
+    public virtual ICollection<MediaItemDbo>? MediaItems { get; set; }
 }

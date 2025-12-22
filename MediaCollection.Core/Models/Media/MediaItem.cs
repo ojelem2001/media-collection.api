@@ -1,4 +1,6 @@
-﻿namespace MediaCollection.Core.Models.Media;
+﻿using MediaCollection.Core.Models.Enum;
+
+namespace MediaCollection.Core.Models.Media;
 
 public class MediaItem
 {

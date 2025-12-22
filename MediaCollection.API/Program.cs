@@ -3,7 +3,7 @@ using FastEndpoints.Swagger;
 using MediaCollection.API;
 using MediaCollection.API.Models.Options;
 using MediaCollection.Core.Models.Options;
-using MediaCollection.Data.Contexts;
+using MediaCollection.Data.Database;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

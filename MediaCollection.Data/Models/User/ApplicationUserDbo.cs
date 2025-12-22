@@ -1,31 +1,33 @@
 ﻿using MediaCollection.Core.Models.Media;
+using MediaCollection.Data.Database;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MediaCollection.Data.Models.User;
 
-public class ApplicationUserDbo
+[Table("users", Schema = MediaDbContext.SCHEME)]
+[PrimaryKey(nameof(Id))]
+public class ApplicationUserDbo: EntityDboBase
 {
-    [Key]
-    public int Id { get; set; }
-
     [Required]
     [MaxLength(100)]
-    public string Username { get; set; } = string.Empty;
+    [Column("username")]
+    public string? Username { get; set; }
 
     [Required]
     [EmailAddress]
     [MaxLength(200)]
-    public string Email { get; set; } = string.Empty;
+    [Column("email")]
+    public string? Email { get; set; }
 
     [Required]
-    public Guid UserGuid { get; set; } = Guid.NewGuid();
+    [Column("guid")]
+    public Guid Guid { get; set; }
 
     [Required]
-    public string PasswordHash { get; set; } = string.Empty;
+    [Column("password")]
+    public string? Password { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
-
-    public virtual ICollection<MediaItemDbo> MediaItems { get; set; } = [];
-    public virtual ICollection<UserCollectionDbo> Collections { get; set; } = [];
+    public virtual ICollection<MediaItemDbo>? MediaItems { get; set; }
 }

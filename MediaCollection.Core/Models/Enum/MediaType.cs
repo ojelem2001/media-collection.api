@@ -1,4 +1,4 @@
-﻿namespace MediaCollection.Core.Models.Media;
+﻿namespace MediaCollection.Core.Models.Enum;
 
 public enum MediaType
 {

@@ -1,6 +1,6 @@
 ﻿using MediaCollection.API.Models.Options;
 using MediaCollection.Core.Abstract;
-using MediaCollection.Data.Contexts;
+using MediaCollection.Data.Database;
 using MediaCollection.Data.Interceptors;
 using MediaCollection.Data.Providers;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +32,7 @@ public static class ConfigureModuleServices
             }
             opt.ConnectionString = builder.ToString();
         });
+
         _ = services.AddDbContext<MediaDbContext>((di, options) =>
         {
             var interceptor = di.GetRequiredService<MediaDbSaveChangesInterceptor>();
