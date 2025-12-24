@@ -43,21 +43,10 @@ public class MediaItemDbo: EntityDboBase
     [Column("series_info_id")]
     public long? SeriesInfoId { get; set; }
 
-    [Column("imdb_id")]
-    public long? ImdbId { get; set; }
-
-    [Column("letterboxd_id")]
-    public long? LetterboxdId { get; set; }
-
-    [Column("kinopoisk_id")]
-    public long? KinopoiskId { get; set; }
-
     /// <summary>
     /// Сссылка на пользователя
     /// </summary>
     public virtual ApplicationUserDbo? User { get; set; }
     public virtual SeriesInfoDbo? SeriesInfo { get; set; }
-    public virtual AggregatorsDbo? Imdb { get; set; }
-    public virtual AggregatorsDbo? Kinopoisk { get; set; }
-    public virtual AggregatorsDbo? Letterboxd { get; set; }
+    public virtual ICollection<AggregatorsDbo>? Aggregators { get; set; }
 }

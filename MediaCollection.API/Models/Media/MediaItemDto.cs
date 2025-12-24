@@ -32,12 +32,6 @@ public class MediaItemDto
     [JsonPropertyName("seriesInfo")]
     public SeriesInfoDto? SeriesInfo { get; set; }
 
-    [JsonPropertyName("imdb")]
-    public AggregatorsDto? Imdb { get; set; }
-
-    [JsonPropertyName("letterboxd")]
-    public AggregatorsDto? Letterboxd { get; set; }
-
-    [JsonPropertyName("kinopoisk")]
-    public AggregatorsDto? Kinopoisk { get; set; }
+    [JsonPropertyName("aggregators")]
+    public IEnumerable<AggregatorsDto>? Aggregators { get; set; }
 }

@@ -24,10 +24,11 @@ public class AggregatorsDbo: EntityDboBase
     [Column("genres", TypeName = "jsonb")]
     public List<string>? Genres { get; set; }
 
+    [Column("media_item_id")]
+    public long MediaItemId { get; set; }
+
     [Column("description")]
     public string? Description { get; set; }
 
-    public virtual ICollection<MediaItemDbo>? ImdbMediaItems { get; set; }
-    public virtual ICollection<MediaItemDbo>? KinopoiskMediaItems { get; set; }
-    public virtual ICollection<MediaItemDbo>? LetterboxdMediaItems { get; set; }
+    public virtual required MediaItemDbo MediaItem { get; set; }
 }

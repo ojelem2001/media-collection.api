@@ -25,11 +25,7 @@ public class MediaItem
 
     public SeriesInfo? SeriesInfo { get; set; }
 
-    public Aggregators? Imdb { get; set; }
-
-    public Aggregators? Letterboxd { get; set; }
-
-    public Aggregators? Kinopoisk { get; set; }
+    public IEnumerable<Aggregators>? Aggregators { get; set; }
 
     public DateTime? Updated { get; set; }
 

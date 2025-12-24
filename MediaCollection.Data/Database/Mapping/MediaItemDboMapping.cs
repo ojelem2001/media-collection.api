@@ -9,19 +9,9 @@ public class MediaItemDboMapping : IEntityTypeConfiguration<MediaItemDbo>
     public void Configure(EntityTypeBuilder<MediaItemDbo> builder)
     {
         _ = builder
-            .HasOne(x => x.Kinopoisk)
-            .WithMany(x => x.KinopoiskMediaItems)
-            .HasForeignKey(x => x.KinopoiskId);
-
-        _ = builder
-            .HasOne(x => x.Letterboxd)
-            .WithMany(x => x.LetterboxdMediaItems)
-            .HasForeignKey(x => x.LetterboxdId);
-
-        _ = builder
-            .HasOne(x => x.Imdb)
-            .WithMany(x => x.ImdbMediaItems)
-            .HasForeignKey(x => x.ImdbId);
+            .HasMany(x => x.Aggregators)
+            .WithOne(x => x.MediaItem)
+            .HasForeignKey(x => x.MediaItemId);
 
         _ = builder
             .HasOne(x => x.User)
