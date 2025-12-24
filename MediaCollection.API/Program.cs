@@ -4,7 +4,9 @@ using MediaCollection.API;
 using MediaCollection.API.Models.Options;
 using MediaCollection.Core.Models.Options;
 using MediaCollection.Data.Database;
+using MediaCollection.Data.Maps;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -25,6 +27,11 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+services.AddAutoMapper(
+    typeof(MediaItemProfile).Assembly,
+    typeof(SeriesInfoProfile).Assembly,
+    typeof(AggregatorsProfile).Assembly,
+    typeof(ApplicationUserProfile).Assembly);
 
 // Register services
 services.AddHttpClient();
@@ -40,6 +47,15 @@ services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     options.SerializerOptions.WriteIndented = true;
+});
+
+// Включаем детальное логирование для JSON ошибок
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.WriteIndented = true;
+    options.SerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+    options.SerializerOptions.IncludeFields = false;
 });
 
 var app = builder.Build();

@@ -5,8 +5,15 @@
 /// </summary>
 public class SeriesInfo
 {
+    public long? Id { get; set; }
+
     public int? Seasons { get; set; }
+
     public int? Episodes { get; set; }
+
     public int? EndYear { get; set; }
-    public string? Status { get; set; } // Завершен, продолжается и т.д.
+
+    public DateTime? Updated { get; set; }
+
+    public DateTime? Created { get; set; }
 }

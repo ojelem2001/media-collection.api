@@ -1,5 +1,4 @@
 ﻿using MediaCollection.Core.Models.Enum;
-using MediaCollection.Core.Models.Media;
 using MediaCollection.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;

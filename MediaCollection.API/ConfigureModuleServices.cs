@@ -13,7 +13,7 @@ public static class ConfigureModuleServices
 {
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IMediaService, MediaService>();
         services.AddScoped<IMediaProvider, MediaProvider>();
 
@@ -37,7 +37,9 @@ public static class ConfigureModuleServices
         {
             var interceptor = di.GetRequiredService<MediaDbSaveChangesInterceptor>();
             var dbOptions = di.GetRequiredService<IOptions<MediaDbOptions>>().Value;
-            _ = options.UseNpgsql(dbOptions?.ConnectionString)
+            var dataSourceBuilder = new NpgsqlDataSourceBuilder(dbOptions?.ConnectionString);
+            dataSourceBuilder.EnableDynamicJson();
+            _ = options.UseNpgsql(dataSourceBuilder.Build())
             .AddInterceptors(interceptor);
         });
         return services;

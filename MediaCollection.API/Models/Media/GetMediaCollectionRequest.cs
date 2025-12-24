@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MediaCollection.API.Models;
+namespace MediaCollection.API.Models.Media;
 
 public class GetMediaCollectionRequest
 {

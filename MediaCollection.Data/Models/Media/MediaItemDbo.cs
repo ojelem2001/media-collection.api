@@ -1,18 +1,16 @@
 ﻿using MediaCollection.Core.Models.Enum;
 using MediaCollection.Data.Database;
-using MediaCollection.Data.Models;
-using MediaCollection.Data.Models.Media;
 using MediaCollection.Data.Models.User;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MediaCollection.Core.Models.Media;
+namespace MediaCollection.Data.Models.Media;
 
 /// <summary>
 /// Информация медиа продукте
 /// </summary>
-[Table("media_item", Schema = MediaDbContext.SCHEME)]
+[Table("media_items", Schema = MediaDbContext.SCHEME)]
 [PrimaryKey(nameof(Id))]
 public class MediaItemDbo: EntityDboBase
 {

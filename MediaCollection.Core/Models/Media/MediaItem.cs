@@ -2,15 +2,18 @@
 
 namespace MediaCollection.Core.Models.Media;
 
+/// <summary>
+/// Информация медиа продукте
+/// </summary>
 public class MediaItem
 {
-    public int Id { get; set; }
+    public long? Id { get; set; }
 
-    public string Title { get; set; }
+    public required string Title { get; set; }
 
     public string? OriginalTitle { get; set; }
 
-    public MediaType Type { get; set; }
+    public required MediaType Type { get; set; }
 
     public int? Year { get; set; }
 
@@ -18,19 +21,17 @@ public class MediaItem
 
     public string? PosterUrl { get; set; }
 
-    public string? PosterUrl2 { get; set; }
+    public long? UserId { get; set; }
 
     public SeriesInfo? SeriesInfo { get; set; }
 
-    public ExternalMetadata ExternalMetadata { get; set; }
+    public Aggregators? Imdb { get; set; }
 
-    public List<string> Genres { get; set; } = new List<string>();
+    public Aggregators? Letterboxd { get; set; }
 
-    public Dictionary<string, object>? AdditionalData { get; set; }
+    public Aggregators? Kinopoisk { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? Updated { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
-
-    public int UserId { get; set; }
+    public DateTime? Created { get; set; }
 }

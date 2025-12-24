@@ -1,19 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MediaCollection.Data.Models.User;
+﻿namespace MediaCollection.Core.Models.User;
 
 public class ApplicationUser
 {
-    public int Id { get; set; }
+    public long? Id { get; set; }
 
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    [Required]
-    public Guid UserGuid { get; set; }
-    public string PasswordHash { get; set; }
+    public Guid Guid { get; set; }
 
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public string? Password { get; set; }
+
+    public DateTime? Updated { get; set; }
+
+    public DateTime? Created { get; set; }
+
 }

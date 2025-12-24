@@ -1,4 +1,4 @@
-﻿using MediaCollection.Core.Models.Media;
+﻿using MediaCollection.Data.Models.Media;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
