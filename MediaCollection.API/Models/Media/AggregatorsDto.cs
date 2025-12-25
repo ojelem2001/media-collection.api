@@ -12,7 +12,7 @@ public class AggregatorsDto
     public required string Number { get; set; }
 
     [JsonPropertyName("type")]
-    public AggregatorType Type { get; set; }
+    public string Type { get; set; }
 
     [JsonPropertyName("rating")]
     public decimal? Rating { get; set; }

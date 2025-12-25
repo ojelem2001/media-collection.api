@@ -22,9 +22,12 @@ public class MediaProvider(MediaDbContext dbContext, IMapper mapper) : IMediaPro
     /// <inheritdoc />
     public async Task<IEnumerable<MediaItem>> GetUserMediaList(Guid userGuid, CancellationToken cancellationToken)
     {
-        var mediaCollection = await dbContext.MediaItems.Include(x=>x.User)
-                .Where(m => m.User != null && m.User.Guid == userGuid)
-                .ToListAsync(cancellationToken);
+        var mediaCollection = await dbContext.MediaItems
+            .Include(x => x.User)
+            .Include(x => x.Aggregators)
+            .Include(x => x.SeriesInfo)
+            .Where(m => m.User != null && m.User.Guid == userGuid)
+            .ToListAsync(cancellationToken);
         return mediaCollection.Select(m => mapper.Map<MediaItemDbo, MediaItem>(m));
     }
 }

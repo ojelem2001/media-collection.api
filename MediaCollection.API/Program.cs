@@ -5,7 +5,10 @@ using MediaCollection.API.Models.Options;
 using MediaCollection.Core.Models.Options;
 using MediaCollection.Data.Database;
 using MediaCollection.Data.Maps;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,10 +31,8 @@ builder.Services.AddSwaggerGen(c =>
 
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 services.AddAutoMapper(
-    typeof(MediaItemProfile).Assembly,
-    typeof(SeriesInfoProfile).Assembly,
-    typeof(AggregatorsProfile).Assembly,
-    typeof(ApplicationUserProfile).Assembly);
+    typeof(UserDboProfile).Assembly,
+    typeof(MediaDboProfile).Assembly);
 
 // Register services
 services.AddHttpClient();
@@ -57,6 +58,32 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
     options.SerializerOptions.IncludeFields = false;
 });
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettingsOptions>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = jwtSettings.Issuer,
+
+        ValidateAudience = true,
+        ValidAudience = jwtSettings.Audience,
+
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -74,6 +101,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseFastEndpoints();
 
 using (var scope = app.Services.CreateScope())

@@ -1,13 +1,15 @@
 ﻿using FastEndpoints;
 using MediaCollection.API.Models.Auth;
+using MediaCollection.API.Models.User;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Core.Models.Auth;
+using MediaCollection.Core.Models.User;
 using Microsoft.AspNetCore.Identity.Data;
 using IMapper = AutoMapper.IMapper;
 
 namespace MediaCollection.API.Endpoints.Auth;
 
-public class RegisterEndpoint(IUserService authService, IMapper mapper) : Endpoint<RegisterRequest, AuthResponseDto>
+public class RegisterEndpoint(IUserService authService, IMapper mapper) : Endpoint<UserRegisterRequestDto, UserRegisterResponseDto>
 {
     public override void Configure()
     {
@@ -15,16 +17,17 @@ public class RegisterEndpoint(IUserService authService, IMapper mapper) : Endpoi
         AllowAnonymous();
         Summary(s => {
             s.Summary = "User registration";
-            s.ExampleRequest = new RegisterRequest { Email="user@post.com", Password="Qwerty1" };
+            s.ExampleRequest = new UserRegisterRequestDto { Name = "John Doe", Login = "user@post.com", Password = "Qwerty1" };
             s.ResponseExamples[200] = new AuthResponseDto { };
             s.Responses[200] = "The user is registered";
             s.Responses[403] = "forbidden response description goes here";
         });
     }
 
-    public override async Task HandleAsync(RegisterRequest request, CancellationToken cancellationToken)
+    public override async Task HandleAsync(UserRegisterRequestDto requestDto, CancellationToken cancellationToken)
     {
-        var response = await authService.RegisterAsync(request.Email, request.Password, cancellationToken);
-        await Send.OkAsync(mapper.Map<AuthResponse, AuthResponseDto>(response), cancellation: cancellationToken);
+        var request = mapper.Map<UserRegisterRequestDto, UserRegisterRequest>(requestDto);
+        var response = await authService.RegisterAsync(request, cancellationToken);
+        await Send.OkAsync(mapper.Map<ApplicationUser, UserRegisterResponseDto>(response), cancellation: cancellationToken);
     }
 }

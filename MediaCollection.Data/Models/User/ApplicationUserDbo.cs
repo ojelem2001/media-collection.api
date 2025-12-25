@@ -12,14 +12,14 @@ public class ApplicationUserDbo: EntityDboBase
 {
     [Required]
     [MaxLength(100)]
-    [Column("username")]
-    public string? Username { get; set; }
+    [Column("name")]
+    public string? Name { get; set; }
 
     [Required]
     [EmailAddress]
     [MaxLength(200)]
-    [Column("email")]
-    public string? Email { get; set; }
+    [Column("login")]
+    public string? Login { get; set; }
 
     [Required]
     [Column("guid")]
@@ -29,5 +29,6 @@ public class ApplicationUserDbo: EntityDboBase
     [Column("password")]
     public string? Password { get; set; }
 
+    public virtual ICollection<RefreshTokenDbo>? RefreshTokens { get; set; }
     public virtual ICollection<MediaItemDbo>? MediaItems { get; set; }
 }

@@ -7,7 +7,7 @@ using IMapper = AutoMapper.IMapper;
 
 namespace MediaCollection.API.Endpoints.Auth;
 
-public class LoginEndpoint(IUserService authService, IMapper mapper) :  Endpoint<LoginRequest, AuthResponseDto>
+public class LoginEndpoint(IUserService authService, IMapper mapper) :  Endpoint<UserLoginRequestDto, AuthResponseDto>
 {
 
     public override void Configure()
@@ -16,13 +16,14 @@ public class LoginEndpoint(IUserService authService, IMapper mapper) :  Endpoint
         AllowAnonymous();
         Summary(s => {
             s.Summary = "User authentication method";
+            s.ExampleRequest = new UserLoginRequestDto { Login = "user@post.com", Password = "Qwerty1" };
             s.Responses[200] = "Successful user authentication";
         });
     }
 
-    public override async Task HandleAsync(LoginRequest request, CancellationToken cancellationToken)
+    public override async Task HandleAsync(UserLoginRequestDto request, CancellationToken cancellationToken)
     {
-        var response = await authService.AuthenticateAsync(request.Email, request.Password, cancellationToken);
-        await Send.OkAsync(mapper.Map<AuthResponse, AuthResponseDto>(response), cancellation: cancellationToken);
+        var response = await authService.AuthenticateAsync(mapper.Map<UserLoginRequestDto, UserLoginRequest>(request), cancellationToken);
+        await Send.OkAsync(mapper.Map<RefreshToken, AuthResponseDto>(response), cancellation: cancellationToken);
     }
 }

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MediaCollection.Data.Database.Migrations
 {
     [DbContext(typeof(MediaDbContext))]
-    [Migration("20251224190806_Initial")]
+    [Migration("20251225182739_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -185,15 +185,21 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("email");
-
                     b.Property<Guid>("Guid")
                         .HasColumnType("uuid")
                         .HasColumnName("guid");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("login");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -204,15 +210,50 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("username");
-
                     b.HasKey("Id");
 
                     b.ToTable("users", "app");
+                });
+
+            modelBuilder.Entity("MediaCollection.Data.Models.User.RefreshTokenDbo", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_revoked");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("token");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("refresh_tokens", "app");
                 });
 
             modelBuilder.Entity("MediaCollection.Data.Models.Media.AggregatorsDbo", b =>
@@ -241,6 +282,17 @@ namespace MediaCollection.Data.Database.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MediaCollection.Data.Models.User.RefreshTokenDbo", b =>
+                {
+                    b.HasOne("MediaCollection.Data.Models.User.ApplicationUserDbo", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MediaCollection.Data.Models.Media.MediaItemDbo", b =>
                 {
                     b.Navigation("Aggregators");
@@ -254,6 +306,8 @@ namespace MediaCollection.Data.Database.Migrations
             modelBuilder.Entity("MediaCollection.Data.Models.User.ApplicationUserDbo", b =>
                 {
                     b.Navigation("MediaItems");
+
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,7 @@
 ﻿using MediaCollection.Data.Models.Media;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace MediaCollection.Data.Database.Mapping;
 

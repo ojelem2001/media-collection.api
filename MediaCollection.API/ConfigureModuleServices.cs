@@ -17,6 +17,7 @@ public static class ConfigureModuleServices
         services.AddScoped<IMediaService, MediaService>();
         services.AddScoped<IMediaProvider, MediaProvider>();
         services.AddScoped<IUserProvider, UserProvider>();
+        services.AddScoped<IRefreshTokenProvider, RefreshTokenProvider>();
 
         services.AddSingleton<MediaDbSaveChangesInterceptor>();
         services.AddNpgSql();

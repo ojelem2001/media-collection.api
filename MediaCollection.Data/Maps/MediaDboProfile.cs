@@ -4,11 +4,17 @@ using MediaCollection.Data.Models.Media;
 
 namespace MediaCollection.Data.Maps;
  
-public class AggregatorsProfile : Profile
+public class MediaDboProfile : Profile
 {
-    public AggregatorsProfile()
+    public MediaDboProfile()
     {
+        CreateMap<MediaItemDbo, MediaItem>();
+        CreateMap<MediaItem, MediaItemDbo>();
+
         CreateMap<AggregatorsDbo, Aggregators>();
         CreateMap<Aggregators, AggregatorsDbo>();
+
+        CreateMap<SeriesInfoDbo, SeriesInfo>();
+        CreateMap<SeriesInfo, SeriesInfoDbo>();
     }
 }

@@ -10,21 +10,38 @@ using System.Text;
 namespace MediaCollection.Core.Abstract;
 
 /// <inheritdoc cref="IMediaService" />
-public class UserService(IOptions<JwtSettingsOptions> options) : IUserService
+public class UserService(IUserProvider userProvider, IRefreshTokenProvider refreshTokenProvider, IOptions<JwtSettingsOptions> options) : IUserService
 {
     private JwtSettingsOptions _options = options.Value;
 
 
     /// <inheritdoc />
-    public Task<AuthResponse> AuthenticateAsync(string email, string password, CancellationToken cancellationToken)
+    public async Task<RefreshToken> AuthenticateAsync(UserLoginRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var existsUser = await userProvider.GetUserByLoginAsync(request.Login, cancellationToken);
+        if (existsUser is null || !BCrypt.Net.BCrypt.Verify(request.Password, existsUser.Password)) throw new Exception("Invalid email or password");
+
+        await refreshTokenProvider.RemoveAllAsync(existsUser.Guid, cancellationToken);
+        
+        var jwtToken = GenerateJwtToken(existsUser);
+
+        var refreshTokenEntity = new RefreshToken()
+        {
+            Token = jwtToken,
+            UserId = existsUser.Id ?? throw new ArgumentNullException(nameof(existsUser.Id)),
+            Expires = DateTime.UtcNow.AddDays(_options.ExpireDays)
+        };
+        await refreshTokenProvider.CreateAsync(refreshTokenEntity, cancellationToken);
+        return refreshTokenEntity;
     }
 
     /// <inheritdoc />
-    public Task<AuthResponse> RegisterAsync(string email, string password, CancellationToken cancellationToken)
+    public async Task<ApplicationUser> RegisterAsync(UserRegisterRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var existsUser = await userProvider.GetUserByLoginAsync(request.Login, cancellationToken);
+        if (existsUser is not null) throw new Exception("Login already registered");
+
+        return await userProvider.CreateAsync(request, cancellationToken);
     }
 
     private string GenerateJwtToken(ApplicationUser user)
@@ -40,10 +57,10 @@ public class UserService(IOptions<JwtSettingsOptions> options) : IUserService
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim("UserId", user.Id.ToString()),
                     new Claim("UserGuid", user.Guid.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Email, user.Login)
                 }),
-            Expires = DateTime.UtcNow.AddDays(7),
+            Expires = DateTime.UtcNow.AddDays(_options.ExpireDays),
             Issuer = _options.Issuer,
             Audience = _options.Audience,
             SigningCredentials = new SigningCredentials(

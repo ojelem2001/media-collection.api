@@ -1,4 +1,5 @@
 ﻿using MediaCollection.Core.Models.Auth;
+using MediaCollection.Core.Models.User;
 
 namespace MediaCollection.Core.Abstract;
 
@@ -10,11 +11,11 @@ public interface IUserService
     /// <summary>
     /// User management service
     /// </summary>
-    public Task<AuthResponse> RegisterAsync(string email, string password, CancellationToken cancellationToken);
+    public Task<ApplicationUser> RegisterAsync(UserRegisterRequest request, CancellationToken cancellationToken);
 
 
     /// <summary>
     /// User management service
     /// </summary>
-    public Task<AuthResponse> AuthenticateAsync(string email, string password, CancellationToken cancellationToken);
+    public Task<RefreshToken> AuthenticateAsync(UserLoginRequest request, CancellationToken cancellationToken);
 }

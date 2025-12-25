@@ -41,8 +41,8 @@ namespace MediaCollection.Data.Database.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    username = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    login = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     guid = table.Column<Guid>(type: "uuid", nullable: false),
                     password = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -86,6 +86,32 @@ namespace MediaCollection.Data.Database.Migrations
                         principalSchema: "app",
                         principalTable: "users",
                         principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "refresh_tokens",
+                schema: "app",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    token = table.Column<string>(type: "text", nullable: false),
+                    expires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_revoked = table.Column<bool>(type: "boolean", nullable: false),
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_refresh_tokens", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_refresh_tokens_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "app",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,6 +159,12 @@ namespace MediaCollection.Data.Database.Migrations
                 schema: "app",
                 table: "media_items",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_refresh_tokens_user_id",
+                schema: "app",
+                table: "refresh_tokens",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -140,6 +172,10 @@ namespace MediaCollection.Data.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "aggregators",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "refresh_tokens",
                 schema: "app");
 
             migrationBuilder.DropTable(

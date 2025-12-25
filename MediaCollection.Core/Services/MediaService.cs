@@ -14,11 +14,12 @@ public class MediaService(IMediaProvider provider, IUserProvider userProvider) :
             throw new Exception($"User with guid '{userGuid}' not found");
         }
 
-        foreach (var item in items)
+        var extendedItems = items.Select(item =>
         {
-            item.User = user;
-        }
-        await provider.AddMediaListAsync(items, cancellationToken);
+            item.UserId = user.Id;
+            return item;
+        }).ToList();
+        await provider.AddMediaListAsync(extendedItems, cancellationToken);
     }
 
     /// <inheritdoc />

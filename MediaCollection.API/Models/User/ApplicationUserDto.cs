@@ -8,10 +8,10 @@ public class ApplicationUserDto
     public long? Id { get; set; }
 
     [JsonPropertyName("username")]
-    public string? Username { get; set; }
+    public string? Name { get; set; }
 
-    [JsonPropertyName("email")]
-    public string? Email { get; set; }
+    [JsonPropertyName("login")]
+    public string? Login { get; set; }
 
     [JsonPropertyName("guid")]
     public Guid Guid { get; set; }

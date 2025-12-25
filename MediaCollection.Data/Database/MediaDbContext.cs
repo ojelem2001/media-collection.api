@@ -17,9 +17,11 @@ public class MediaDbContext : DbContext
     public DbSet<MediaItemDbo> MediaItems { get; set; }
     public DbSet<AggregatorsDbo> Aggregators { get; set; }
     public DbSet<SeriesInfoDbo> SeriesInfo { get; set; }
+    public DbSet<RefreshTokenDbo> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         _ = modelBuilder.ApplyConfiguration(new MediaItemDboMapping());
+        _ = modelBuilder.ApplyConfiguration(new UserDboMapping());
     }
 }
