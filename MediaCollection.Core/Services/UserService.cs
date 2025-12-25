@@ -71,42 +71,4 @@ public class UserService(IUserProvider userProvider, IRefreshTokenProvider refre
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
-
-    private int? ValidateJwtToken(string token)
-    {
-        if (string.IsNullOrEmpty(token))
-            return null;
-
-        var secretKey = _options.SecretKey;
-
-        if (string.IsNullOrEmpty(secretKey))
-            return null;
-
-        var key = Encoding.UTF8.GetBytes(secretKey);
-        var tokenHandler = new JwtSecurityTokenHandler();
-
-        try
-        {
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = true,
-                ValidIssuer = _options.Issuer,
-                ValidateAudience = true,
-                ValidAudience = _options.Audience,
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            var userId = int.Parse(
-                jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
-
-            return userId;
-        }
-        catch
-        {
-            return null;
-        }
-    }
 }
