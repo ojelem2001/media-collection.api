@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FastEndpoints;
+﻿using FastEndpoints;
 using MediaCollection.API.Models.Auth;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Core.Models.Auth;
@@ -25,7 +24,7 @@ public class RegisterEndpoint(IUserService authService, IMapper mapper) : Endpoi
 
     public override async Task HandleAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
-        var response = authService.Register(request.Email, request.Password, cancellationToken);
+        var response = await authService.RegisterAsync(request.Email, request.Password, cancellationToken);
         await Send.OkAsync(mapper.Map<AuthResponse, AuthResponseDto>(response), cancellation: cancellationToken);
     }
 }

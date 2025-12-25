@@ -16,13 +16,13 @@ public class UserService(IOptions<JwtSettingsOptions> options) : IUserService
 
 
     /// <inheritdoc />
-    public AuthResponse Login(string email, string password, CancellationToken cancellationToken)
+    public Task<AuthResponse> AuthenticateAsync(string email, string password, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
-    public AuthResponse Register(string email, string password, CancellationToken cancellationToken)
+    public Task<AuthResponse> RegisterAsync(string email, string password, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

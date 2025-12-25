@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Core.Models.Media;
+using MediaCollection.Core.Models.User;
 using MediaCollection.Data.Database;
 using MediaCollection.Data.Models.Media;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace MediaCollection.Data.Providers;
 public class MediaProvider(MediaDbContext dbContext, IMapper mapper) : IMediaProvider
 {
     /// <inheritdoc />
-    public async Task AddMediaListAsync(Guid userGuid, IEnumerable<MediaItem> items, CancellationToken cancellationToken)
+    public async Task AddMediaListAsync(IEnumerable<MediaItem> items, CancellationToken cancellationToken)
     {
         var entities = items.Select(m => mapper.Map<MediaItem, MediaItemDbo>(m)).ToList();
         _ = dbContext.MediaItems.AddRangeAsync(entities, cancellationToken);

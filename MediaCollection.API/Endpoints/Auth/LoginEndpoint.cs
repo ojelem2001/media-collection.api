@@ -22,7 +22,7 @@ public class LoginEndpoint(IUserService authService, IMapper mapper) :  Endpoint
 
     public override async Task HandleAsync(LoginRequest request, CancellationToken cancellationToken)
     {
-        var response = authService.Login(request.Email, request.Password, cancellationToken);
+        var response = await authService.AuthenticateAsync(request.Email, request.Password, cancellationToken);
         await Send.OkAsync(mapper.Map<AuthResponse, AuthResponseDto>(response), cancellation: cancellationToken);
     }
 }

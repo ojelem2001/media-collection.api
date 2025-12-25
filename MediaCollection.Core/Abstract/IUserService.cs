@@ -2,8 +2,19 @@
 
 namespace MediaCollection.Core.Abstract;
 
+/// <summary>
+/// User management service
+/// </summary>
 public interface IUserService
 {
-    public AuthResponse Register(string email, string password, CancellationToken cancellationToken);
-    public AuthResponse Login(string email, string password, CancellationToken cancellationToken);
+    /// <summary>
+    /// User management service
+    /// </summary>
+    public Task<AuthResponse> RegisterAsync(string email, string password, CancellationToken cancellationToken);
+
+
+    /// <summary>
+    /// User management service
+    /// </summary>
+    public Task<AuthResponse> AuthenticateAsync(string email, string password, CancellationToken cancellationToken);
 }

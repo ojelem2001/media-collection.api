@@ -1,4 +1,5 @@
 ﻿using MediaCollection.Core.Models.Media;
+using MediaCollection.Core.Models.User;
 
 namespace MediaCollection.Core.Abstract;
 
@@ -7,7 +8,13 @@ namespace MediaCollection.Core.Abstract;
 /// </summary>
 public interface IMediaProvider
 {
-    public Task AddMediaListAsync(Guid userGuid, IEnumerable<MediaItem> items, CancellationToken cancellationToken);
+    /// <summary>
+    /// Add media content to user
+    /// </summary>
+    public Task AddMediaListAsync(IEnumerable<MediaItem> items, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Get user media content collection
+    /// </summary>
     public Task<IEnumerable<MediaItem>> GetUserMediaList(Guid userGuid, CancellationToken cancellationToken);
 }

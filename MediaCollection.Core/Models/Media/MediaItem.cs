@@ -1,4 +1,5 @@
 ﻿using MediaCollection.Core.Models.Enum;
+using MediaCollection.Core.Models.User;
 
 namespace MediaCollection.Core.Models.Media;
 
@@ -22,6 +23,8 @@ public class MediaItem
     public string? PosterUrl { get; set; }
 
     public long? UserId { get; set; }
+
+    public ApplicationUser? User { get; set; }
 
     public SeriesInfo? SeriesInfo { get; set; }
 
