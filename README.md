@@ -55,11 +55,15 @@ API поддерживает все необходимые CRUD операции
 		}
 	}
 2.1. Создание миграции:
-	`Add-Migration Initial -Project MediaCollection.Data -StartupProject MediaCollection.Data  -o Database\Migrations -context MediaDbContext -Verbose`
+	```
+	Add-Migration Initial -Project MediaCollection.Data -StartupProject MediaCollection.Data  -o Database\Migrations -context MediaDbContext -Verbose
 2.2. Удаление миграции:
-	`Remove-Migration -Force -Project MediaCollection.Data -StartupProject MediaCollection.Data -context MediaDbContext -Verbose`
+	```
+	Remove-Migration -Force -Project MediaCollection.Data -StartupProject MediaCollection.Data -context MediaDbContext -Verbose
 3. Обновление базы данных:
-	`Update-Database  -Project MediaCollection.Data -StartupProject MediaCollection.Data -verbose -context MediaDbContext`
+	```
+	Update-Database  -Project MediaCollection.Data -StartupProject MediaCollection.Data -verbose -context MediaDbContext
 3. Запустите приложение:
-	`dotnet run`
+	```
+	dotnet run
 4. Откройте в браузере http://localhost:7128/swagger/
