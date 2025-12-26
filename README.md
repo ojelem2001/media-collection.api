@@ -36,7 +36,7 @@ API поддерживает все необходимые CRUD операции
    ```bash
    git clone https://github.com/ojelem2001/media-collection.api.git
    cd media-collection.api
-2. Настройка конекста базы данных для запуска миграций. Добавить в MediaDbContext:
+2. Настройка контекста базы данных для запуска миграций. Добавьте в MediaDbContext:
 	```
 	public MediaDbContext()
 	{
