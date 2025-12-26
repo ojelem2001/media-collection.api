@@ -16,7 +16,7 @@ public class MediaService(IMediaProvider provider, IUserProvider userProvider) :
 
         var extendedItems = items.Select(item =>
         {
-            item.UserId = user.Id;
+            item.UserGuid = user.Guid;
             return item;
         }).ToList();
         await provider.AddMediaListAsync(extendedItems, cancellationToken);

@@ -12,6 +12,10 @@ namespace MediaCollection.Data.Models.Media;
 [PrimaryKey(nameof(Id))]
 public class AggregatorsDbo: EntityDboBase
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
+    public long Id { get; set; }
+
     [Column("number")]
     public required string Number { get; set; }
 
@@ -25,7 +29,7 @@ public class AggregatorsDbo: EntityDboBase
     public List<string>? Genres { get; set; }
 
     [Column("media_item_id")]
-    public long MediaItemId { get; set; }
+    public Guid MediaItemId { get; set; }
 
     [Column("description")]
     public string? Description { get; set; }

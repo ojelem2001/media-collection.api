@@ -17,7 +17,7 @@ public class MediaItemDboMapping : IEntityTypeConfiguration<MediaItemDbo>
         _ = builder
             .HasOne(x => x.User)
             .WithMany(x => x.MediaItems)
-            .HasForeignKey(x => x.UserId);
+            .HasForeignKey(x => x.UserGuid);
 
         _ = builder
             .HasOne(x => x.SeriesInfo)

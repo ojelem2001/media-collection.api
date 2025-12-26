@@ -11,6 +11,10 @@ namespace MediaCollection.Data.Models.Media;
 [PrimaryKey(nameof(Id))]
 public class SeriesInfoDbo: EntityDboBase
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
+    public long Id { get; set; }
+
     [Column("seasons")]
     public int? Seasons { get; set; }
 

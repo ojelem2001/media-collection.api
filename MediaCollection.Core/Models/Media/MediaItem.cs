@@ -8,7 +8,7 @@ namespace MediaCollection.Core.Models.Media;
 /// </summary>
 public class MediaItem
 {
-    public long? Id { get; set; }
+    public Guid Guid { get; set; }
 
     public required string Title { get; set; }
 
@@ -22,7 +22,9 @@ public class MediaItem
 
     public string? PosterUrl { get; set; }
 
-    public long? UserId { get; set; }
+    public Guid? UserGuid { get; set; }
+
+    public long IsWatched { get; set; }
 
     public ApplicationUser? User { get; set; }
 

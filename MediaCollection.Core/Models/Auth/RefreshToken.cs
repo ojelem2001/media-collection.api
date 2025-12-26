@@ -10,5 +10,5 @@ public class RefreshToken
 
     public bool IsRevoked { get; set; }
 
-    public long UserId { get; set; }
+    public Guid UserGuid { get; set; }
 }

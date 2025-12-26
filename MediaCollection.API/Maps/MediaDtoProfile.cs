@@ -10,7 +10,8 @@ public class MediaDtoProfile : Profile
 {
     public MediaDtoProfile()
     {
-        CreateMap<MediaItemDto, MediaItem>();
+        CreateMap<MediaItemDto, MediaItem>()
+            .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => src.Guid ?? Guid.NewGuid()));
         CreateMap<MediaItem, MediaItemDto>();
 
         CreateMap<SeriesInfoDto, SeriesInfo>();

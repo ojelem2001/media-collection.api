@@ -4,9 +4,6 @@ namespace MediaCollection.API.Models.User;
 
 public class ApplicationUserDto
 {
-    [JsonPropertyName("id")]
-    public long? Id { get; set; }
-
     [JsonPropertyName("username")]
     public string? Name { get; set; }
 
@@ -24,5 +21,8 @@ public class ApplicationUserDto
 
     [JsonPropertyName("created")]
     public DateTime? Created { get; set; }
+
+    [JsonPropertyName("isActive")]
+    public bool IsActive { get; set; }
 
 }

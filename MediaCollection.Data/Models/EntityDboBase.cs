@@ -7,9 +7,6 @@ namespace MediaCollection.Data.Models;
 /// </summary>
 public abstract class EntityDboBase
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id")]
-    public long Id { get; set; }
 
     [Column("created_at")]
     public DateTime Created { get; set; }

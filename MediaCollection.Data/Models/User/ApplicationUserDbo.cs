@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MediaCollection.Data.Models.User;
 
 [Table("users", Schema = MediaDbContext.SCHEME)]
-[PrimaryKey(nameof(Id))]
+[PrimaryKey(nameof(Guid))]
 public class ApplicationUserDbo: EntityDboBase
 {
     [Required]
@@ -24,6 +24,10 @@ public class ApplicationUserDbo: EntityDboBase
     [Required]
     [Column("guid")]
     public Guid Guid { get; set; }
+
+    [Required]
+    [Column("is_active")]
+    public bool IsActive { get; set; }
 
     [Required]
     [Column("password")]

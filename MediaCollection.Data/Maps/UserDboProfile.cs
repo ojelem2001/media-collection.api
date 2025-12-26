@@ -15,7 +15,8 @@ public class UserDboProfile : Profile
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
             .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)))
-            .ForMember(dest => dest.Guid, opt => opt.MapFrom(_ => Guid.NewGuid()));
+            .ForMember(dest => dest.Guid, opt => opt.MapFrom(_ => Guid.NewGuid()))
+            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(_ => false));//by default user inactive
        
         CreateMap<RefreshToken, RefreshTokenDbo>();
         CreateMap<RefreshTokenDbo, RefreshToken>();

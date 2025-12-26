@@ -39,18 +39,17 @@ namespace MediaCollection.Data.Database.Migrations
                 schema: "app",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guid = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     login = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    guid = table.Column<Guid>(type: "uuid", nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
                     password = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.id);
+                    table.PrimaryKey("PK_users", x => x.guid);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,22 +57,22 @@ namespace MediaCollection.Data.Database.Migrations
                 schema: "app",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    guid = table.Column<Guid>(type: "uuid", nullable: false),
                     title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     original_title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     type = table.Column<int>(type: "integer", nullable: false),
                     year = table.Column<int>(type: "integer", nullable: true),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
                     poster_url = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    user_id = table.Column<long>(type: "bigint", nullable: true),
+                    is_watched = table.Column<long>(type: "bigint", nullable: false),
+                    user_guid = table.Column<Guid>(type: "uuid", nullable: true),
                     series_info_id = table.Column<long>(type: "bigint", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_media_items", x => x.id);
+                    table.PrimaryKey("PK_media_items", x => x.guid);
                     table.ForeignKey(
                         name: "FK_media_items_series_info_series_info_id",
                         column: x => x.series_info_id,
@@ -81,11 +80,11 @@ namespace MediaCollection.Data.Database.Migrations
                         principalTable: "series_info",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_media_items_users_user_id",
-                        column: x => x.user_id,
+                        name: "FK_media_items_users_user_guid",
+                        column: x => x.user_guid,
                         principalSchema: "app",
                         principalTable: "users",
-                        principalColumn: "id");
+                        principalColumn: "guid");
                 });
 
             migrationBuilder.CreateTable(
@@ -98,7 +97,7 @@ namespace MediaCollection.Data.Database.Migrations
                     token = table.Column<string>(type: "text", nullable: false),
                     expires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_revoked = table.Column<bool>(type: "boolean", nullable: false),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    user_guid = table.Column<Guid>(type: "uuid", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -106,11 +105,11 @@ namespace MediaCollection.Data.Database.Migrations
                 {
                     table.PrimaryKey("PK_refresh_tokens", x => x.id);
                     table.ForeignKey(
-                        name: "FK_refresh_tokens_users_user_id",
-                        column: x => x.user_id,
+                        name: "FK_refresh_tokens_users_user_guid",
+                        column: x => x.user_guid,
                         principalSchema: "app",
                         principalTable: "users",
-                        principalColumn: "id",
+                        principalColumn: "guid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -125,7 +124,7 @@ namespace MediaCollection.Data.Database.Migrations
                     type = table.Column<int>(type: "integer", nullable: false),
                     rating = table.Column<decimal>(type: "numeric", nullable: true),
                     genres = table.Column<List<string>>(type: "jsonb", nullable: true),
-                    media_item_id = table.Column<long>(type: "bigint", nullable: false),
+                    media_item_id = table.Column<Guid>(type: "uuid", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -138,7 +137,7 @@ namespace MediaCollection.Data.Database.Migrations
                         column: x => x.media_item_id,
                         principalSchema: "app",
                         principalTable: "media_items",
-                        principalColumn: "id",
+                        principalColumn: "guid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -155,16 +154,16 @@ namespace MediaCollection.Data.Database.Migrations
                 column: "series_info_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_media_items_user_id",
+                name: "IX_media_items_user_guid",
                 schema: "app",
                 table: "media_items",
-                column: "user_id");
+                column: "user_guid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_refresh_tokens_user_id",
+                name: "IX_refresh_tokens_user_guid",
                 schema: "app",
                 table: "refresh_tokens",
-                column: "user_id");
+                column: "user_guid");
         }
 
         /// <inheritdoc />

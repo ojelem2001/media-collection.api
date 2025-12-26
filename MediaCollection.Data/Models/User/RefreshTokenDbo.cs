@@ -8,6 +8,10 @@ namespace MediaCollection.Data.Models.User;
 [PrimaryKey(nameof(Id))]
 public class RefreshTokenDbo : EntityDboBase
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
+    public long Id { get; set; }
+
     [Column("token")]
     public required string Token { get; set; }
 
@@ -17,7 +21,7 @@ public class RefreshTokenDbo : EntityDboBase
     [Column("is_revoked")]
     public bool IsRevoked { get; set; }
 
-    [Column("user_id")]
-    public long UserId { get; set; }
+    [Column("user_guid")]
+    public Guid UserGuid { get; set; }
     public required ApplicationUserDbo User { get; set; }
 }

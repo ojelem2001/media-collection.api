@@ -44,8 +44,8 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnType("jsonb")
                         .HasColumnName("genres");
 
-                    b.Property<long>("MediaItemId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid>("MediaItemId")
+                        .HasColumnType("uuid")
                         .HasColumnName("media_item_id");
 
                     b.Property<string>("Number")
@@ -74,12 +74,10 @@ namespace MediaCollection.Data.Database.Migrations
 
             modelBuilder.Entity("MediaCollection.Data.Models.Media.MediaItemDbo", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid")
+                        .HasColumnName("guid");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone")
@@ -89,6 +87,10 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("description");
+
+                    b.Property<long>("IsWatched")
+                        .HasColumnType("bigint")
+                        .HasColumnName("is_watched");
 
                     b.Property<string>("OriginalTitle")
                         .HasMaxLength(200)
@@ -118,19 +120,19 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
+                    b.Property<Guid?>("UserGuid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_guid");
 
                     b.Property<int?>("Year")
                         .HasColumnType("integer")
                         .HasColumnName("year");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasIndex("SeriesInfoId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserGuid");
 
                     b.ToTable("media_items", "app");
                 });
@@ -171,20 +173,18 @@ namespace MediaCollection.Data.Database.Migrations
 
             modelBuilder.Entity("MediaCollection.Data.Models.User.ApplicationUserDbo", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid")
+                        .HasColumnName("guid");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uuid")
-                        .HasColumnName("guid");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -207,7 +207,7 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("users", "app");
                 });
@@ -242,13 +242,13 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_guid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserGuid");
 
                     b.ToTable("refresh_tokens", "app");
                 });
@@ -272,7 +272,7 @@ namespace MediaCollection.Data.Database.Migrations
 
                     b.HasOne("MediaCollection.Data.Models.User.ApplicationUserDbo", "User")
                         .WithMany("MediaItems")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserGuid");
 
                     b.Navigation("SeriesInfo");
 
@@ -283,7 +283,7 @@ namespace MediaCollection.Data.Database.Migrations
                 {
                     b.HasOne("MediaCollection.Data.Models.User.ApplicationUserDbo", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -11,9 +11,13 @@ namespace MediaCollection.Data.Models.Media;
 /// Информация медиа продукте
 /// </summary>
 [Table("media_items", Schema = MediaDbContext.SCHEME)]
-[PrimaryKey(nameof(Id))]
+[PrimaryKey(nameof(Guid))]
 public class MediaItemDbo: EntityDboBase
 {
+    [Required]
+    [Column("guid")]
+    public Guid Guid { get; set; }
+
     [Required]
     [MaxLength(200)]
     [Column("title")]
@@ -37,8 +41,11 @@ public class MediaItemDbo: EntityDboBase
     [Column("poster_url")]
     public string? PosterUrl { get; set; }
 
-    [Column("user_id")]
-    public long? UserId { get; set; }
+    [Column("is_watched")]
+    public long IsWatched { get; set; }
+
+    [Column("user_guid")]
+    public Guid? UserGuid { get; set; }
 
     [Column("series_info_id")]
     public long? SeriesInfoId { get; set; }

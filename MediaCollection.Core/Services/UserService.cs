@@ -28,7 +28,7 @@ public class UserService(IUserProvider userProvider, IRefreshTokenProvider refre
         var refreshTokenEntity = new RefreshToken()
         {
             Token = jwtToken,
-            UserId = existsUser.Id ?? throw new ArgumentNullException(nameof(existsUser.Id)),
+            UserGuid = existsUser.Guid,
             Expires = DateTime.UtcNow.AddDays(_options.ExpireDays)
         };
         await refreshTokenProvider.CreateAsync(refreshTokenEntity, cancellationToken);
@@ -54,8 +54,7 @@ public class UserService(IUserProvider userProvider, IRefreshTokenProvider refre
             Subject = new ClaimsIdentity(
                 new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim("UserId", user.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Guid.ToString()),
                     new Claim("UserGuid", user.Guid.ToString()),
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Login)

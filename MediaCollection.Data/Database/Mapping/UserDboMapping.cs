@@ -10,7 +10,7 @@ public class UserDboMapping : IEntityTypeConfiguration<ApplicationUserDbo>
     {
         _ = builder.HasMany(rt => rt.RefreshTokens)
                   .WithOne(u => u.User)
-                  .HasForeignKey(rt => rt.UserId)
+                  .HasForeignKey(rt => rt.UserGuid)
                   .OnDelete(DeleteBehavior.Cascade);
     }
 }

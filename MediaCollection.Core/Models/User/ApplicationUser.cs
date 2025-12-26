@@ -2,8 +2,6 @@
 
 public class ApplicationUser
 {
-    public long? Id { get; set; }
-
     public string? Name { get; set; }
 
     public string? Login { get; set; }
@@ -16,4 +14,5 @@ public class ApplicationUser
 
     public DateTime? Created { get; set; }
 
+    public bool IsActive { get; set; }
 }

@@ -8,8 +8,8 @@ namespace MediaCollection.API.Models.Media;
 /// </summary>
 public class MediaItemDto
 {
-    [JsonPropertyName("id")]
-    public long? Id { get; set; }
+    [JsonPropertyName("guid")]
+    public Guid? Guid { get; set; }
 
     [JsonPropertyName("title")]
     public required string Title { get; set; }
@@ -25,6 +25,9 @@ public class MediaItemDto
 
     [JsonPropertyName("description")]
     public string? Description { get; set; }
+
+    [JsonPropertyName("isWatched")]
+    public long IsWatched { get; set; }
 
     [JsonPropertyName("posterUrl")]
     public string? PosterUrl { get; set; }
