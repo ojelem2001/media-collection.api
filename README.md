@@ -37,25 +37,24 @@ API поддерживает все необходимые CRUD операции
    git clone https://github.com/ojelem2001/media-collection.api.git
    cd media-collection.api
 2. Настройка конекста базы данных для запуска миграций. Добавить в MediaDbContext:
-`
- public MediaDbContext()
- {
- }
+	```
+	public MediaDbContext()
+	{
+	}
 
- protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
- {
-     if (!optionsBuilder.IsConfigured)
-     {
-         // Конфигурация для дизайн-тайма (миграций)
-         optionsBuilder.UseNpgsql("Host=localhost;Database=media_db;Username=<USERNAME>;Password=<PASSWORD>;Port=5432",
-             npgsqlOptions =>
-             {
-                 npgsqlOptions.MigrationsAssembly(GetType().Assembly.FullName);
-             });
-     }
- }
-`
-2.1 Создание миграции:
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		if (!optionsBuilder.IsConfigured)
+		{
+			// Конфигурация для дизайн-тайма (миграций)
+			optionsBuilder.UseNpgsql("Host=localhost;Database=media_db;Username=<USERNAME>;Password=<PASSWORD>;Port=5432",
+				npgsqlOptions =>
+				{
+					npgsqlOptions.MigrationsAssembly(GetType().Assembly.FullName);
+				});
+		}
+	}
+2.1. Создание миграции:
 	`Add-Migration Initial -Project MediaCollection.Data -StartupProject MediaCollection.Data  -o Database\Migrations -context MediaDbContext -Verbose`
 2.2. Удаление миграции:
 	`Remove-Migration -Force -Project MediaCollection.Data -StartupProject MediaCollection.Data -context MediaDbContext -Verbose`
