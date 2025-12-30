@@ -17,11 +17,11 @@ jobs:
         username: ${{ secrets.VM_USER }}
         key: ${{ secrets.VM_SSH_KEY }} 
         script: |
-          cd ~/applications/media-collection-api
+          cd ~/applications/media-collection.api
           git pull origin main
-          dotnet restore
-          dotnet publish -c Release -o ./publish
+          dotnet restore **/*.sln
+          dotnet publish ./MediaCollection.API/MediaCollection.API.sln -c Release -o ./publish
           sudo systemctl stop media-collection-api 2>/dev/null || true         
-          sudo cp -r ./publish/* /var/www/media-collection-api/ 2>/dev/null || mkdir -p /var/www/media-collection-api/
+          cp -r ./publish/* /var/www/media-collection-api/ 2>/dev/null || mkdir -p /var/www/media-collection-api/
           sudo systemctl start media-collection-api || echo "Service not configured, running manually"
 
