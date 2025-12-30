@@ -63,7 +63,7 @@ namespace MediaCollection.Data.Database.Migrations
                     type = table.Column<int>(type: "integer", nullable: false),
                     year = table.Column<int>(type: "integer", nullable: true),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    poster_url = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    poster_url = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
                     is_watched = table.Column<long>(type: "bigint", nullable: false),
                     user_guid = table.Column<Guid>(type: "uuid", nullable: true),
                     series_info_id = table.Column<long>(type: "bigint", nullable: true),

@@ -98,8 +98,8 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnName("original_title");
 
                     b.Property<string>("PosterUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
                         .HasColumnName("poster_url");
 
                     b.Property<long?>("SeriesInfoId")

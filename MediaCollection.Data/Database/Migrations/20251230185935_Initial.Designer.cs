@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MediaCollection.Data.Database.Migrations
 {
     [DbContext(typeof(MediaDbContext))]
-    [Migration("20251226184655_Initial")]
+    [Migration("20251230185935_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -101,8 +101,8 @@ namespace MediaCollection.Data.Database.Migrations
                         .HasColumnName("original_title");
 
                     b.Property<string>("PosterUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
                         .HasColumnName("poster_url");
 
                     b.Property<long?>("SeriesInfoId")

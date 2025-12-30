@@ -37,7 +37,7 @@ public class MediaItemDbo: EntityDboBase
     [Column("description")]
     public string? Description { get; set; }
 
-    [MaxLength(500)]
+    [MaxLength(2000)]
     [Column("poster_url")]
     public string? PosterUrl { get; set; }
 
