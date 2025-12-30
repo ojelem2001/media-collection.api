@@ -35,13 +35,19 @@ public static class ConfigureModuleServices
             opt.ConnectionString = builder.ToString();
         });
 
+        _ = services.AddSingleton<NpgsqlDataSource>(sp =>
+        {
+            var dbOptions = sp.GetRequiredService<IOptions<MediaDbOptions>>().Value;
+            var dataSourceBuilder = new NpgsqlDataSourceBuilder(dbOptions.ConnectionString);
+            dataSourceBuilder.EnableDynamicJson();
+            return dataSourceBuilder.Build();
+        });
+
         _ = services.AddDbContext<MediaDbContext>((di, options) =>
         {
             var interceptor = di.GetRequiredService<MediaDbSaveChangesInterceptor>();
-            var dbOptions = di.GetRequiredService<IOptions<MediaDbOptions>>().Value;
-            var dataSourceBuilder = new NpgsqlDataSourceBuilder(dbOptions?.ConnectionString);
-            dataSourceBuilder.EnableDynamicJson();
-            _ = options.UseNpgsql(dataSourceBuilder.Build())
+            var dataSource = di.GetRequiredService<NpgsqlDataSource>();
+            _ = options.UseNpgsql(dataSource)
             .AddInterceptors(interceptor);
         });
         return services;

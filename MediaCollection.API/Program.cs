@@ -15,11 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var services = builder.Services;
 
+services.AddCors();
 services.AddApplicationServices(configuration);
 
 services.AddFastEndpoints();
+services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 services.SwaggerDocument();
-builder.Services.AddSwaggerGen(c =>
+services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { 
         Title = "Media Collection API",
@@ -51,7 +56,7 @@ services.ConfigureHttpJsonOptions(options =>
 });
 
 // Включаем детальное логирование для JSON ошибок
-builder.Services.ConfigureHttpJsonOptions(options =>
+services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNameCaseInsensitive = true;
     options.SerializerOptions.WriteIndented = true;
@@ -60,7 +65,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettingsOptions>();
 
-builder.Services.AddAuthentication(options =>
+services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -83,9 +88,14 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
-builder.Services.AddAuthorization();
+services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 if (app.Environment.IsDevelopment())
 {
