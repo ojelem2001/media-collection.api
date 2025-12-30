@@ -1,0 +1,25 @@
+name: Deploy media-collection-api app
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_USER }}
+        key: ${{ secrets.VM_SSH_KEY }} 
+        script: |
+          cd ~/applications/media-collection-api
+          git pull
+          dotnet restore
+          dotnet publish -c Release -o app          
+          cd ./app
+          dotnet run --environment Production
