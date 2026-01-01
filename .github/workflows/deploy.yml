@@ -23,10 +23,10 @@ jobs:
           dotnet publish ./MediaCollection.API/MediaCollection.API.sln -c Release -o ./publish
           sudo systemctl stop media-collection-api 2>/dev/null || true         
           cp -r ./publish/* /var/www/media-collection-api/ 2>/dev/null || mkdir -p /var/www/media-collection-api/
-          export MediaDbOptions__Database__ConnectionParams__Host=${{ secrets.PG_HOST }}
-          export MediaDbOptions__Database__ConnectionParams__User Id=${{ secrets.PG_LOGIN }}
-          export MediaDbOptions__Database__ConnectionParams__Password=${{ secrets.PG_PASSWORD }}
-          export MediaDbOptions__Database__ConnectionParams__Port=${{ secrets.PG_PORT }}
-          export JwtSettings__SecretKey=${{ secrets.SECRET_KEY }}
+          export API_HOST=${{ secrets.PG_HOST }}
+          export DB_USER=${{ secrets.PG_LOGIN }}
+          export DB_PASSWORD=${{ secrets.PG_PASSWORD }}
+          export API_PORT=${{ secrets.PG_PORT }}
+          export API_SECRET_KEY=${{ secrets.SECRET_KEY }}
           sudo systemctl start media-collection-api || echo "Service not configured, running manually"
 
