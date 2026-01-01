@@ -27,5 +27,6 @@ jobs:
           export MediaDbOptions__Database__ConnectionParams__User Id=${{ secrets.PG_LOGIN }}
           export MediaDbOptions__Database__ConnectionParams__Password=${{ secrets.PG_PASSWORD }}
           export MediaDbOptions__Database__ConnectionParams__Port=${{ secrets.PG_PORT }}
+          export JwtSettings__SecretKey=${{ secrets.SECRET_KEY }}
           sudo systemctl start media-collection-api || echo "Service not configured, running manually"
 
