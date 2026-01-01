@@ -30,7 +30,6 @@ public static class ConfigureModuleServices
             var builder = new NpgsqlConnectionStringBuilder(opt.ConnectionString);
             foreach(var param in opt.ConnectionParams)
             {
-                Console.WriteLine(param);
                 builder[param.Key] = param.Value;
             }
             opt.ConnectionString = builder.ToString();
