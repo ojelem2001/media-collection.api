@@ -22,15 +22,7 @@ services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
-services.SwaggerDocument(options =>
-{
-    options.MaxEndpointVersion = 1;
-    options.ShortSchemaNames = true;
-    options.DocumentSettings = settings =>
-    {
-        settings.SchemaSettings.GenerateEnumMappingDescription = true;
-    };
-});
+services.SwaggerDocument();
 
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 services.AddAutoMapper(
@@ -100,10 +92,9 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseOpenApi(c => c.Path = $"/api/swagger/swagger.json");
+app.UseOpenApi(c => c.Path = "/api/swagger/swagger.json");
 app.UseSwaggerUI(c =>
 {
-    c.RoutePrefix = "api/swagger";
     c.SwaggerEndpoint("/api/swagger/swagger.json", "Media Collection API V1");
 });
 
