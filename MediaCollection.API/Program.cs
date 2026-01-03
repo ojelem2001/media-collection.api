@@ -28,8 +28,6 @@ services.SwaggerDocument(options =>
     options.ShortSchemaNames = true;
     options.DocumentSettings = settings =>
     {
-        settings.Version = "v1";
-        settings.DocumentName = "v1";
         settings.SchemaSettings.GenerateEnumMappingDescription = true;
     };
 });
@@ -102,7 +100,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseOpenApi(c => c.Path = $"/api/swagger/{{documentName}}/swagger.json");
+app.UseOpenApi(c => c.Path = $"/api/swagger/swagger.json");
 app.UseSwaggerUI(c =>
 {
     c.RoutePrefix = "api/swagger";
