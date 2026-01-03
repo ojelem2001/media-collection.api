@@ -92,11 +92,10 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseOpenApi(c => c.Path = $"/api/swagger/swagger.json");
+app.UseOpenApi(c => c.Path = $"/swagger/swagger.json");
 app.UseSwaggerUI(c =>
 {
-    c.RoutePrefix = "api/swagger";
-    c.SwaggerEndpoint("/api/swagger/swagger.json", "Media Collection API V1");
+    c.SwaggerEndpoint("/swagger/swagger.json", "Media Collection API V1");
 });
 
 app.UseHttpsRedirection();
