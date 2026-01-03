@@ -22,7 +22,6 @@ jobs:
           dotnet restore **/*.sln
           dotnet publish ./MediaCollection.API/MediaCollection.API.sln -c Release -o ./publish
           sudo systemctl stop media-collection-api 2>/dev/null || true         
-          cp -r ./publish/* /var/www/media-collection-api/ 2>/dev/null || mkdir -p /var/www/media-collection-api/
 
           sed -i "s/\${API_HOST}/${{ secrets.PG_HOST }}/g" ./publish/appsettings.json
           sed -i "s/\${API_PORT}/${{ secrets.PG_PORT }}/g" ./publish/appsettings.json
@@ -30,5 +29,6 @@ jobs:
           sed -i "s/\${DB_PASSWORD}/${{ secrets.PG_PASSWORD }}/g" ./publish/appsettings.json
           sed -i "s/\${API_SECRET_KEY}/${{ secrets.SECRET_KEY }}/g" ./publish/appsettings.json
           
+          cp -r ./publish/* /var/www/media-collection-api/ 2>/dev/null || mkdir -p /var/www/media-collection-api/
           sudo systemctl start media-collection-api || echo "Service not configured, running manually"
 
