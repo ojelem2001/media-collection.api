@@ -7,7 +7,6 @@ using MediaCollection.Data.Database;
 using MediaCollection.Data.Maps;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -23,15 +22,16 @@ services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
-services.SwaggerDocument();
-services.AddSwaggerGen(c =>
+services.SwaggerDocument(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { 
-        Title = "Media Collection API",
-        Description = "API для управления коллекцией медиа",
-        Version = "v1"
-    });
-    c.CustomSchemaIds(x => x.FullName);
+    options.MaxEndpointVersion = 1;
+    options.ShortSchemaNames = true;
+    options.DocumentSettings = settings =>
+    {
+        settings.Version = "v1";
+        settings.DocumentName = "v1";
+        settings.SchemaSettings.GenerateEnumMappingDescription = true;
+    };
 });
 
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -102,14 +102,11 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseOpenApi();
-app.UseSwagger(c =>
-{
-    c.RouteTemplate = "swagger/{documentName}/swagger.json";
-});
+app.UseOpenApi(c => c.Path = $"/api/swagger/{{documentName}}/swagger.json");
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Media Collection API V1");
+    c.RoutePrefix = "api/swagger";
+    c.SwaggerEndpoint("/api/swagger/swagger.json", "Media Collection API V1");
 });
 
 app.UseHttpsRedirection();
