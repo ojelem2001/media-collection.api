@@ -14,7 +14,7 @@ public class GetMediaEndpoint(IUserMediaService mediaService, IMapper mapper) : 
         Get("/api/users/{userGuid}/media/{mediaGuid}");
         AllowAnonymous();
         Summary(s => {
-            s.Summary = "Get a user's media content collection";
+            s.Summary = "Get a user's media content";
         });
     }
 

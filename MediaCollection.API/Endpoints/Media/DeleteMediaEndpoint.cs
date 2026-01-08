@@ -11,7 +11,7 @@ public class DeleteMediaEndpoint(IUserMediaService mediaService) : Endpoint<Medi
         Delete("/api/users/{userGuid}/media/{mediaGuid}");
         Claims("UserGuid");
         Summary(s => {
-            s.Summary = "Get a user's media content collection";
+            s.Summary = "Delete user's media content";
         });
     }
 

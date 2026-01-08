@@ -14,7 +14,7 @@ public class PutMediaEndpoint(IUserMediaService mediaService, IMapper mapper) : 
         Put("/api/users/{userGuid}/media/{mediaGuid}");
         Claims("UserGuid");
         Summary(s => {
-            s.Summary = "Get a user's media content collection";
+            s.Summary = "Update user's media content";
         });
     }
 
