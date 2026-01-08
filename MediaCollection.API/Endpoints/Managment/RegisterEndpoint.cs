@@ -1,10 +1,8 @@
 ﻿using FastEndpoints;
 using MediaCollection.API.Models.Auth;
-using MediaCollection.API.Models.User;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Core.Models.Auth;
 using MediaCollection.Core.Models.User;
-using Microsoft.AspNetCore.Identity.Data;
 using IMapper = AutoMapper.IMapper;
 
 namespace MediaCollection.API.Endpoints.Auth;

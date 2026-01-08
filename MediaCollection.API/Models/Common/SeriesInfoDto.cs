@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MediaCollection.API.Models.Media;
+namespace MediaCollection.API.Models.Common;
 
 /// <summary>
 /// Информация о сериале

@@ -1,7 +1,7 @@
 ﻿using MediaCollection.Core.Models.Enum;
 using System.Text.Json.Serialization;
 
-namespace MediaCollection.API.Models.Media;
+namespace MediaCollection.API.Models.Common;
 
 /// <summary>
 /// Информация медиа продукте

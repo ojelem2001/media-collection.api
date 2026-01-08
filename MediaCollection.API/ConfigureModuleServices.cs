@@ -14,8 +14,8 @@ public static class ConfigureModuleServices
     public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IMediaService, MediaService>();
-        services.AddScoped<IMediaProvider, MediaProvider>();
+        services.AddScoped<IUserMediaService, UserMediaService>();
+        services.AddScoped<IUserMediaProvider, UserMediaProvider>();
         services.AddScoped<IUserProvider, UserProvider>();
         services.AddScoped<IRefreshTokenProvider, RefreshTokenProvider>();
 

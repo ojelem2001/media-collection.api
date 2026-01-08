@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MediaCollection.Core.Abstract;
 
-/// <inheritdoc cref="IMediaService" />
+/// <inheritdoc cref="IUserMediaService" />
 public class UserService(IUserProvider userProvider, IRefreshTokenProvider refreshTokenProvider, IOptions<JwtSettingsOptions> options) : IUserService
 {
     private JwtSettingsOptions _options = options.Value;

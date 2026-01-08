@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MediaCollection.API.Models.Media;
+using MediaCollection.API.Models.Common;
 using MediaCollection.Core.Models.Enum;
 using MediaCollection.Core.Models.Media;
 using Microsoft.OpenApi.Extensions;
