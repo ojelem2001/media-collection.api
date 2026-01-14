@@ -11,6 +11,7 @@ public class MediaDtoProfile : Profile
     public MediaDtoProfile()
     {
         CreateMap<MediaItemDto, MediaItem>()
+            .ForMember(dest => dest.UserGuid, opt => opt.MapFrom((src, dest, member, context) => (Guid)context.Items["UserGuid"]))
             .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => src.Guid ?? Guid.NewGuid()));
         CreateMap<MediaItem, MediaItemDto>();
 

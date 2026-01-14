@@ -3,23 +3,12 @@
 namespace MediaCollection.Core.Abstract;
 
 /// <inheritdoc cref="IUserMediaService" />
-public class UserMediaService(IUserMediaProvider provider, IUserProvider userProvider) : IUserMediaService
+public class UserMediaService(IUserMediaProvider provider) : IUserMediaService
 {
     /// <inheritdoc />
-    public async Task AddMediaBatchAsync(Guid userGuid, IEnumerable<MediaItem> items, CancellationToken cancellationToken)
+    public async Task AddMediaBatchAsync(IEnumerable<MediaItem> items, CancellationToken cancellationToken)
     {
-        var user = await userProvider.GetUserByGuidAsync(userGuid, cancellationToken);
-        if (user is null)
-        {
-            throw new Exception($"User with guid '{userGuid}' not found");
-        }
-
-        var extendedItems = items.Select(item =>
-        {
-            item.UserGuid = user.Guid;
-            return item;
-        }).ToList();
-        await provider.AddMediaBatchAsync(extendedItems, cancellationToken);
+        await provider.AddMediaBatchAsync(items, cancellationToken);
     }
 
     public async Task<MediaItem> AddMediaAsync(MediaItem item, CancellationToken cancellationToken)

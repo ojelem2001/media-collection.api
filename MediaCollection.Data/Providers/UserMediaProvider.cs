@@ -38,7 +38,33 @@ public class UserMediaProvider(MediaDbContext dbContext, IMapper mapper) : IUser
     /// <inheritdoc />
     public async Task AddMediaBatchAsync(IEnumerable<MediaItem> items, CancellationToken cancellationToken)
     {
-        var entities = items.Select(m => mapper.Map<MediaItem, MediaItemDbo>(m)).ToList();
+        var entities = items.Select(mapper.Map<MediaItem, MediaItemDbo>).ToList();
+
+        var entityKeys = entities
+              .Select(e => $"{e.OriginalTitle}|{e.Year}|{e.Type}")
+              .Distinct()
+              .ToList();
+
+        var existingKeys = await dbContext.MediaItems
+            .Where(m => m.UserGuid == entities.First().UserGuid)
+            .Select(m => $"{m.OriginalTitle}|{m.Year}|{m.Type}")
+            .ToListAsync(cancellationToken);
+
+        var duplicates = entityKeys.Where(existingKeys.Contains).ToList();
+
+        if (duplicates.Any())
+        {
+            var duplicateMessages = duplicates
+            .Select(key =>
+            {
+                var parts = key.Split('|');
+                return $"'{parts[0]}' ({parts[1]})";
+            });
+
+            throw new InvalidOperationException(
+                $"Duplicate media found: {string.Join(", ", duplicateMessages)}");
+        }
+
         _ = dbContext.MediaItems.AddRangeAsync(entities, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
     }

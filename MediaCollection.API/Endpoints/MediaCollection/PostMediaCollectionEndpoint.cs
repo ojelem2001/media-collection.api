@@ -22,7 +22,7 @@ public class PostMediaCollectionEndpoint(IUserMediaService mediaService, IMapper
     public override async Task HandleAsync(List<MediaItemDto> media, CancellationToken cancellationToken)
     {
         var userGuid = Route<Guid>("userGuid");
-        await mediaService.AddMediaBatchAsync(userGuid, media.Select(mapper.Map<MediaItemDto, MediaItem>), cancellationToken);
+        await mediaService.AddMediaBatchAsync(media.Select(dto => mapper.Map<MediaItem>(dto, opt => opt.Items["UserGuid"] = userGuid)), cancellationToken);
         await Send.OkAsync(cancellation: cancellationToken);
     }
 }

@@ -30,7 +30,7 @@ public interface IUserMediaService
     /// <summary>
     /// Add media content to user
     /// </summary>
-    public Task AddMediaBatchAsync(Guid userGuid, IEnumerable<MediaItem> items, CancellationToken cancellationToken);
+    public Task AddMediaBatchAsync(IEnumerable<MediaItem> items, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get user media content collection
