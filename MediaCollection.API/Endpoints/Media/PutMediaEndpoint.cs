@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using MediaCollection.API.Models.Common;
 using MediaCollection.API.Models.Media;
+using MediaCollection.API.Validation;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Core.Models.Media;
 using IMapper = AutoMapper.IMapper;
@@ -13,6 +14,7 @@ public class PutMediaEndpoint(IUserMediaService mediaService, IMapper mapper) : 
     {
         Put("/api/users/{userGuid}/media/{mediaGuid}");
         Claims("UserGuid");
+        PreProcessor<UserGuidPreProcessor>();
         Summary(s => {
             s.Summary = "Update user's media content";
         });
@@ -21,11 +23,6 @@ public class PutMediaEndpoint(IUserMediaService mediaService, IMapper mapper) : 
     public override async Task HandleAsync(MediaRequest request, CancellationToken cancellationToken)
     {
         var media = mapper.Map<MediaItemDto, MediaItem>(request.Media ?? throw new ArgumentNullException(nameof(request.Media)));
-        var userGuid = Guid.Parse(User.Claims.First(c => c.Type == "UserGuid").Value);
-        if (userGuid != request.UserGuid || userGuid != media.UserGuid)
-        {
-            throw new Exception("Only the owner can modify media");
-        }
         var updatedMedia = await mediaService.UpdateMediaAsync(
             request.UserGuid ?? throw new ArgumentNullException(nameof(request.UserGuid)), 
             media, 

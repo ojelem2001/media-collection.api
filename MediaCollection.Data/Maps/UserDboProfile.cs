@@ -18,7 +18,10 @@ public class UserDboProfile : Profile
             .ForMember(dest => dest.Guid, opt => opt.MapFrom(_ => Guid.NewGuid()))
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(_ => false));//by default user inactive
        
-        CreateMap<RefreshToken, RefreshTokenDbo>();
+        CreateMap<RefreshToken, RefreshTokenDbo>()
+            .ForMember(dest => dest.UserGuid, opt => opt.MapFrom(src => src.User.Guid))
+            .ForMember(dest => dest.User, opt => opt.Ignore()); // Ignore User than create token
+        ;
         CreateMap<RefreshTokenDbo, RefreshToken>();
     }
 }

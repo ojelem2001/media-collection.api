@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Core.Models.Auth;
-using MediaCollection.Core.Models.User;
 using MediaCollection.Data.Database;
 using MediaCollection.Data.Models.User;
 using Microsoft.EntityFrameworkCore;

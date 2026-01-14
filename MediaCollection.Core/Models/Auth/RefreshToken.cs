@@ -1,4 +1,6 @@
-﻿namespace MediaCollection.Core.Models.Auth;
+﻿using MediaCollection.Core.Models.User;
+
+namespace MediaCollection.Core.Models.Auth;
 
 public class RefreshToken
 {
@@ -10,5 +12,5 @@ public class RefreshToken
 
     public bool IsRevoked { get; set; }
 
-    public Guid UserGuid { get; set; }
+    public ApplicationUser User { get; set; }
 }

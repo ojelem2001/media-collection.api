@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using MediaCollection.API.Models.Media;
+using MediaCollection.API.Validation;
 using MediaCollection.Core.Abstract;
 
 namespace MediaCollection.API.Endpoints.MediaCollection;
@@ -10,6 +11,7 @@ public class DeleteMediaEndpoint(IUserMediaService mediaService) : Endpoint<Medi
     {
         Delete("/api/users/{userGuid}/media/{mediaGuid}");
         Claims("UserGuid");
+        PreProcessor<UserGuidPreProcessor>();
         Summary(s => {
             s.Summary = "Delete user's media content";
         });

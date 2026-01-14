@@ -28,7 +28,7 @@ public class UserService(IUserProvider userProvider, IRefreshTokenProvider refre
         var refreshTokenEntity = new RefreshToken()
         {
             Token = jwtToken,
-            UserGuid = existsUser.Guid,
+            User = existsUser,
             Expires = DateTime.UtcNow.AddDays(_options.ExpireDays)
         };
         await refreshTokenProvider.CreateAsync(refreshTokenEntity, cancellationToken);

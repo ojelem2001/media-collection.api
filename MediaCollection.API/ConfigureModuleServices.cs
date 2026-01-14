@@ -1,4 +1,5 @@
 ﻿using MediaCollection.API.Models.Options;
+using MediaCollection.API.Validation;
 using MediaCollection.Core.Abstract;
 using MediaCollection.Data.Database;
 using MediaCollection.Data.Interceptors;
@@ -18,6 +19,8 @@ public static class ConfigureModuleServices
         services.AddScoped<IUserMediaProvider, UserMediaProvider>();
         services.AddScoped<IUserProvider, UserProvider>();
         services.AddScoped<IRefreshTokenProvider, RefreshTokenProvider>();
+
+        services.AddTransient<UserGuidPreProcessor>();
 
         services.AddSingleton<MediaDbSaveChangesInterceptor>();
         services.AddNpgSql();

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MediaCollection.API.Models.Managment;
+using System.Text.Json.Serialization;
 
 namespace MediaCollection.API.Models.Auth;
 
@@ -9,4 +10,7 @@ public class AuthResponseDto
 
     [JsonPropertyName("expires")]
     public DateTime Expires { get; set; }
+
+    [JsonPropertyName("user")]
+    public AuthUserResponseDto User { get; set; }
 }

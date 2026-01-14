@@ -24,5 +24,4 @@ public class ApplicationUserDto
 
     [JsonPropertyName("isActive")]
     public bool IsActive { get; set; }
-
 }
